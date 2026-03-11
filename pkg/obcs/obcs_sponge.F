@@ -64,7 +64,8 @@ C Northern Open Boundary
 #ifdef ALLOW_OBCS_NORTH
        IF ( OBCSsponge_N .AND. OBCSsponge_UatNS ) THEN
         DO i=iMin,iMax
-         IF ( OB_Jn(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Jn(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Jn(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Jn(i,bi,bj)-jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -99,7 +100,8 @@ C Southern Open Boundary
 #ifdef ALLOW_OBCS_SOUTH
        IF ( OBCSsponge_S .AND. OBCSsponge_UatNS ) THEN
         DO i=iMin,iMax
-         IF ( OB_Js(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Js(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Js(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Js(i,bi,bj)+jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -134,7 +136,8 @@ C Eastern Open Boundary
 #ifdef ALLOW_OBCS_EAST
        IF ( OBCSsponge_E .AND. OBCSsponge_UatEW ) THEN
         DO j=jMin,jMax
-         IF ( OB_Ie(j,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Ie(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Ie(j,bi,bj).EQ.1) ) THEN
           DO isl= 1,spongeThickness
            i=OB_Ie(j,bi,bj)-isl
            IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -169,7 +172,8 @@ C Western Open Boundary
 #ifdef ALLOW_OBCS_WEST
        IF ( OBCSsponge_W .AND. OBCSsponge_UatEW ) THEN
         DO j=jMin,jMax
-         IF ( OB_Iw(j,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Iw(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Iw(j,bi,bj).EQ.1) ) THEN
           DO isl= 1,spongeThickness
            i=OB_Iw(j,bi,bj)+isl+1
            IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -264,7 +268,8 @@ C Northern Open Boundary
 #ifdef ALLOW_OBCS_NORTH
        IF ( OBCSsponge_N .AND. OBCSsponge_VatNS ) THEN
         DO i=iMin,iMax
-         IF ( OB_Jn(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Jn(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Jn(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Jn(i,bi,bj)-jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -299,7 +304,8 @@ C Southern Open Boundary
 #ifdef ALLOW_OBCS_SOUTH
        IF ( OBCSsponge_S .AND. OBCSsponge_VatNS ) THEN
         DO i=iMin,iMax
-         IF ( OB_Js(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Js(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Js(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Js(i,bi,bj)+jsl+1
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -334,7 +340,8 @@ C Eastern Open Boundary
 #ifdef ALLOW_OBCS_EAST
        IF ( OBCSsponge_E .AND. OBCSsponge_VatEW ) THEN
         DO j=jMin,jMax
-         IF ( OB_Ie(j,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Ie(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Ie(j,bi,bj).EQ.1) ) THEN
           DO isl= 1,spongeThickness
            i=OB_Ie(j,bi,bj)-isl
            IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -369,7 +376,8 @@ C Western Open Boundary
 #ifdef ALLOW_OBCS_WEST
        IF ( OBCSsponge_W .AND. OBCSsponge_VatEW ) THEN
         DO j=jMin,jMax
-         IF ( OB_Iw(j,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Iw(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Iw(j,bi,bj).EQ.1) ) THEN
           DO isl= 1,spongeThickness
            i=OB_Iw(j,bi,bj)+isl
            IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -464,7 +472,8 @@ C Northern Open Boundary
 #ifdef ALLOW_OBCS_NORTH
        IF ( OBCSsponge_N .AND. OBCSsponge_Theta ) THEN
         DO i=iMin,iMax
-         IF ( OB_Jn(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Jn(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Jn(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Jn(i,bi,bj)-jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -501,7 +510,8 @@ C Southern Open Boundary
 #ifdef ALLOW_OBCS_SOUTH
        IF ( OBCSsponge_S .AND. OBCSsponge_Theta ) THEN
         DO i=iMin,iMax
-         IF ( OB_Js(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Js(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Js(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Js(i,bi,bj)+jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -538,7 +548,8 @@ C Eastern Open Boundary
 #ifdef ALLOW_OBCS_EAST
        IF ( OBCSsponge_E .AND. OBCSsponge_Theta ) THEN
         DO j=jMin,jMax
-         IF ( OB_Ie(j,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Ie(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Ie(j,bi,bj).EQ.1) ) THEN
           DO isl= 1,spongeThickness
            i=OB_Ie(j,bi,bj)-isl
            IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -575,7 +586,8 @@ C Western Open Boundary
 #ifdef ALLOW_OBCS_WEST
        IF ( OBCSsponge_W .AND. OBCSsponge_Theta ) THEN
         DO j=jMin,jMax
-         IF ( OB_Iw(j,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Iw(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Iw(j,bi,bj).EQ.1) ) THEN
           DO isl= 1,spongeThickness
            i=OB_Iw(j,bi,bj)+isl
            IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -672,7 +684,8 @@ C Northern Open Boundary
 #ifdef ALLOW_OBCS_NORTH
        IF ( OBCSsponge_N .AND. OBCSsponge_Salt ) THEN
         DO i=iMin,iMax
-         IF ( OB_Jn(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Jn(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Jn(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Jn(i,bi,bj)-jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -709,7 +722,8 @@ C Southern Open Boundary
 #ifdef ALLOW_OBCS_SOUTH
        IF ( OBCSsponge_S .AND. OBCSsponge_Salt ) THEN
         DO i=iMin,iMax
-         IF ( OB_Js(i,bi,bj).NE.OB_indexNone ) THEN
+         IF ( (OB_Js(i,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Js(i,bi,bj).EQ.1) ) THEN
           DO jsl= 1,spongeThickness
            j=OB_Js(i,bi,bj)+jsl
            IF ((j.ge.jmin).and.(j.le.jmax)) THEN
@@ -746,7 +760,8 @@ C Eastern Open Boundary
 #ifdef ALLOW_OBCS_EAST
       IF ( OBCSsponge_E .AND. OBCSsponge_Salt ) THEN
        DO j=jMin,jMax
-        IF ( OB_Ie(j,bi,bj).NE.OB_indexNone ) THEN
+        IF ( (OB_Ie(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Ie(j,bi,bj).EQ.1) ) THEN
          DO isl= 1,spongeThickness
           i=OB_Ie(j,bi,bj)-isl
           IF ((i.ge.imin).and.(i.le.imax)) THEN
@@ -783,7 +798,8 @@ C Western Open Boundary
 #ifdef ALLOW_OBCS_WEST
       IF ( OBCSsponge_W .AND. OBCSsponge_Salt ) THEN
        DO j=jMin,jMax
-        IF ( OB_Iw(j,bi,bj).NE.OB_indexNone ) THEN
+        IF ( (OB_Iw(j,bi,bj).NE.OB_indexNone).and.
+     &     (nudgOB_Iw(j,bi,bj).EQ.1) ) THEN
          DO isl= 1,spongeThickness
           i=OB_Iw(j,bi,bj)+isl
           IF ((i.ge.imin).and.(i.le.imax)) THEN

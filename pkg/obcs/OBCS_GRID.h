@@ -42,6 +42,10 @@ C   OBW_connect      :: domain connected piece Id of this Western OB grid point
       INTEGER OB_Js(1-OLx:sNx+OLx,nSx,nSy)
       INTEGER OB_Ie(1-OLy:sNy+OLy,nSx,nSy)
       INTEGER OB_Iw(1-OLy:sNy+OLy,nSx,nSy)
+      INTEGER nudgOB_Jn(1-OLx:sNx+OLx,nSx,nSy)
+      INTEGER nudgOB_Js(1-OLx:sNx+OLx,nSx,nSy)
+      INTEGER nudgOB_Ie(1-OLy:sNy+OLy,nSx,nSy)
+      INTEGER nudgOB_Iw(1-OLy:sNy+OLy,nSx,nSy)
       INTEGER OB_indexNone
       INTEGER OBCS_indexStatus
 

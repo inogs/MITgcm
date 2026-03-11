@@ -105,11 +105,19 @@ C OB_Iwest(W2_maxYStackNy)  :: global index array of western  open-boundary poin
       INTEGER OB_Jsouth(W2_maxXStackNx)
       INTEGER OB_Ieast(W2_maxYStackNy)
       INTEGER OB_Iwest(W2_maxYStackNy)
+      INTEGER nudgOB_Jnorth(W2_maxXStackNx)
+      INTEGER nudgOB_Jsouth(W2_maxXStackNx)
+      INTEGER nudgOB_Ieast(W2_maxYStackNy)
+      INTEGER nudgOB_Iwest(W2_maxYStackNy)
 #else
       INTEGER OB_Jnorth(Nx)
       INTEGER OB_Jsouth(Nx)
       INTEGER OB_Ieast(Ny)
       INTEGER OB_Iwest(Ny)
+      INTEGER nudgOB_Jnorth(Nx)
+      INTEGER nudgOB_Jsouth(Nx)
+      INTEGER nudgOB_Ieast(Ny)
+      INTEGER nudgOB_Iwest(Ny)
 #endif
       INTEGER OB_singleJnorth
       INTEGER OB_singleJsouth
@@ -141,6 +149,7 @@ C     Retired parameters:
      &          OBNconnectFile, OBSconnectFile,
      &          OBEconnectFile, OBWconnectFile,
      &          OB_Jnorth, OB_Jsouth, OB_Ieast, OB_Iwest,
+     &          nudgOB_Jnorth, nudgOB_Jsouth, nudgOB_Ieast, nudgOB_Iwest,
      &          OB_singleJnorth, OB_singleJsouth,
      &          OB_singleIeast,  OB_singleIwest,
      &          useOrlanskiNorth, useOrlanskiSouth,
@@ -244,10 +253,14 @@ C--   Default flags and values for OBCS
       DO i=1,OBNS_Nx
        OB_Jnorth(i) = OB_indexUnset
        OB_Jsouth(i) = OB_indexUnset
+       nudgOB_Jnorth(i) = OB_indexUnset
+       nudgOB_Jsouth(i) = OB_indexUnset
       ENDDO
       DO j=1,OBEW_Ny
        OB_Ieast(j) = OB_indexUnset
        OB_Iwest(j) = OB_indexUnset
+       nudgOB_Ieast(j) = OB_indexUnset
+       nudgOB_Iwest(j) = OB_indexUnset
       ENDDO
       OB_singleJnorth = OB_indexUnset
       OB_singleJsouth = OB_indexUnset
@@ -670,10 +683,14 @@ C-    Account for periodicity if negative indices were supplied
       DO j=1,OBEW_Ny
        IF ( OB_Ieast(j) .NE.OB_indexUnset .AND.
      &      OB_Ieast(j) .LT.0 ) OB_Ieast(j) = OB_Ieast(j)+OBEW_Nx+1
+       IF ( nudgOB_Ieast(j) .NE.OB_indexUnset .AND.
+     &      nudgOB_Ieast(j) .LT.0 ) nudgOB_Ieast(j) = nudgOB_Ieast(j)+OBEW_Nx+1
       ENDDO
       DO i=1,OBNS_Nx
        IF ( OB_Jnorth(i).NE.OB_indexUnset .AND.
      &      OB_Jnorth(i).LT.0 ) OB_Jnorth(i)=OB_Jnorth(i)+OBNS_Ny+1
+       IF ( nudgOB_Jnorth(i).NE.OB_indexUnset .AND.
+     &      nudgOB_Jnorth(i).LT.0 ) nudgOB_Jnorth(i)=nudgOB_Jnorth(i)+OBNS_Ny+1
       ENDDO
 
       IF ( debugLevel.GE.debLevA ) THEN
@@ -724,11 +741,15 @@ C     valid interior indices) which is called before OBCS_INIT_FIXED.
         DO i=1-OLx,sNx+OLx
          OB_Jn(i,bi,bj) = OB_indexNone
          OB_Js(i,bi,bj) = OB_indexNone
+         nudgOB_Jn(i,bi,bj) = OB_indexNone
+         nudgOB_Js(i,bi,bj) = OB_indexNone
         ENDDO
 
         DO j=1-OLy,sNy+OLy
          OB_Ie(j,bi,bj) = OB_indexNone
          OB_Iw(j,bi,bj) = OB_indexNone
+         nudgOB_Ie(j,bi,bj) = OB_indexNone
+         nudgOB_Iw(J,bi,bj) = OB_indexNone
         ENDDO
 
 #ifdef ALLOW_EXCH2
@@ -746,6 +767,7 @@ C     loop over local y index J
           DO j=1,sNy+1
            jG = exch2_tyXStackLo(tN)+j-1
            IF ( jG.EQ.OB_Jnorth(iG) ) OB_Jn(i,bi,bj) = j
+           IF ( jG.EQ.nudgOB_Jnorth(iG) ) nudgOB_Jn(i,bi,bj) = 1
           ENDDO
          ENDIF
 C-    Southern boundaries
@@ -753,6 +775,7 @@ C-    Southern boundaries
           DO j=0,sNy
            jG = exch2_tyXStackLo(tN)+j-1
            IF ( jG.EQ.OB_Jsouth(iG) ) OB_Js(i,bi,bj) = j
+           IF ( jG.EQ.nudgOB_Jsouth(iG) ) nudgOB_Js(i,bi,bj) = 1
           ENDDO
          ENDIF
         ENDDO
@@ -767,6 +790,7 @@ C     loop over local x index I
           DO i=1,sNx+1
            iG = exch2_txYStackLo(tN)+i-1
            IF ( iG.EQ.OB_Ieast(jG) )  OB_Ie(j,bi,bj) = i
+           IF ( iG.EQ.nudgOB_Ieast(jG) )  nudgOB_Ie(j,bi,bj) = 1
           ENDDO
          ENDIF
 C-    Western  boundaries
@@ -774,6 +798,7 @@ C-    Western  boundaries
           DO i=0,sNx
            iG = exch2_txYStackLo(tN)+i-1
            IF ( iG.EQ.OB_Iwest(jG) )  OB_Iw(j,bi,bj) = i
+           IF ( iG.EQ.nudgOB_Iwest(jG) )  nudgOB_Iw(j,bi,bj) = 1
           ENDDO
          ENDIF
         ENDDO
@@ -798,6 +823,7 @@ C     loop over local x index I
            iG = myXGlobalLo+(bi-1)*sNx+i-1
            iGm = 1+MOD( iG-1+Nx , Nx )
            IF ( iG.EQ.OB_Ieast(jGm) )  OB_Ie(j,bi,bj) = i
+           IF ( iG.EQ.nudgOB_Ieast(jGm) )  nudgOB_Ie(j,bi,bj) = 1
           ENDDO
          ENDIF
 C-    Western  boundaries
@@ -806,6 +832,7 @@ C-    Western  boundaries
            iG = myXGlobalLo+(bi-1)*sNx+i-1
            iGm = 1+MOD( iG-1+Nx , Nx )
            IF ( iG.EQ.OB_Iwest(jGm) )  OB_Iw(j,bi,bj) = i
+           IF ( iG.EQ.(nudgOB_Iwest(jGm)-1) )  nudgOB_Iw(j,bi,bj) = 1
           ENDDO
          ENDIF
         ENDDO
@@ -820,6 +847,7 @@ C     OB_Jnorth(iG) allows to put the northern boundary at variable y locations
            jG = myYGlobalLo+(bj-1)*sNy+j-1
            jGm = 1+MOD( jG-1+Ny , Ny )
            IF ( jG.EQ.OB_Jnorth(iGm) ) OB_Jn(i,bi,bj) = j
+           IF ( jG.EQ.nudgOB_Jnorth(iGm) ) nudgOB_Jn(i,bi,bj) = 1
           ENDDO
          ENDIF
 C-    Southern boundaries
@@ -828,6 +856,7 @@ C-    Southern boundaries
            jG = myYGlobalLo+(bj-1)*sNy+j-1
            jGm = 1+MOD( jG-1+Ny , Ny )
            IF ( jG.EQ.OB_Jsouth(iGm) ) OB_Js(i,bi,bj) = j
+           IF ( jG.EQ.(nudgOB_Jsouth(iGm)-1) ) nudgOB_Js(i,bi,bj) = 1
           ENDDO
          ENDIF
         ENDDO
