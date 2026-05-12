@@ -27,9 +27,11 @@ C---  RBCS 3-D Fields:
       _RL RBCsalt(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
       COMMON /RBCS_MASKS_TR/
      &          RBC_mask
+      _RL rbcsTempGlobMin(Nr)
       COMMON /RBCS_FIELDS_TS/
      &          RBCtemp,
-     &          RBCsalt
+     &          RBCsalt,
+     &          rbcsTempGlobMin
 
 #ifdef ALLOW_PTRACERS
       _RL RBC_ptracers(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy,

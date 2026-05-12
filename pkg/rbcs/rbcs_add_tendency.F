@@ -88,14 +88,15 @@ CEOP
       IF ( tracerNum.EQ.1 .AND. useRBCtemp ) THEN
         irbc = MIN(maskLEN,tracerNum)
         rec_tauRlx = rbcsVanishingFac/tauRelaxT
-        DO j=0,sNy+1
-         DO i=0,sNx+1
-          gTendency(i,j) = gTendency(i,j)
-     &       - RBC_mask(i,j,k,bi,bj,irbc)*rec_tauRlx
-     &        *( theta(i,j,k,bi,bj)- RBCtemp(i,j,k,bi,bj) )
-
+        IF ( rbcsTempGlobMin(k) .GE. -5. _d 0 ) THEN
+         DO j=0,sNy+1
+          DO i=0,sNx+1
+           gTendency(i,j) = gTendency(i,j)
+     &        - RBC_mask(i,j,k,bi,bj,irbc)*rec_tauRlx
+     &         *( theta(i,j,k,bi,bj)- RBCtemp(i,j,k,bi,bj) )
+          ENDDO
          ENDDO
-        ENDDO
+        ENDIF
       ENDIF
 
       IF ( tracerNum.EQ.2 .AND. useRBCsalt ) THEN

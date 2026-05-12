@@ -33,6 +33,12 @@ C     i,j,k,bi,bj,iTracer  :: loop indices
       INTEGER iTracer
 #endif
 
+      _BEGIN_MASTER( myThid )
+       DO k=1,Nr
+        rbcsTempGlobMin(k) = 1. _d 10
+       ENDDO
+      _END_MASTER( myThid )
+
       DO bj = myByLo(myThid), myByHi(myThid)
         DO bi = myBxLo(myThid), myBxHi(myThid)
           rbcsLdRec(bi,bj) = 0
