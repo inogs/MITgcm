@@ -75,7 +75,8 @@ C--   RBCS parameters:
      &          rbcsVanishingTime,
      &          rbcsSingleTimeFiles,
      &          deltaTrbcs,
-     &          rbcsIter0
+     &          rbcsIter0,
+     &          rbcsTempHalfWindow
 
 #ifdef ALLOW_PTRACERS
       NAMELIST /RBCS_PARM02/
@@ -120,6 +121,7 @@ C--   Default values
       rbcsForcingCycle  = 0. _d 0
       rbcsForcingOffset = 0. _d 0
       rbcsVanishingTime = 0. _d 0
+      rbcsTempHalfWindow = -1. _d 0
       rbcsSingleTimeFiles = .FALSE.
       deltaTrbcs = deltaTclock
       rbcsIter0 = 0

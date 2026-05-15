@@ -48,6 +48,7 @@ C  i,j            :: loop indices
       INTEGER irbc
       _RL rbcsVanishingFac
       _RL rec_tauRlx
+      _RL timeOfDay
 #ifdef ALLOW_PTRACERS
       INTEGER iTracer
 #endif
@@ -85,10 +86,19 @@ CEOP
       ENDIF
 #endif /* DISABLE_RBCS_MOM */
 
+C     Added two conditions to assimilate temperature:
+C     1. The global minimum of temperature on the plane k
+C     must be greater than -5
+C     2. timeOfDay must be within rbcsTempHalfWindow, i.e.
+C     a time window centered at time 00h for each day.
       IF ( tracerNum.EQ.1 .AND. useRBCtemp ) THEN
         irbc = MIN(maskLEN,tracerNum)
         rec_tauRlx = rbcsVanishingFac/tauRelaxT
-        IF ( rbcsTempGlobMin(k) .GE. -5. _d 0 ) THEN
+        timeOfDay = MOD( myTime, 86400. _d 0 )
+        IF ( rbcsTempGlobMin(k) .GE. -5. _d 0 .AND.
+     &       ( rbcsTempHalfWindow .LE. 0. _d 0 .OR.
+     &         MIN( timeOfDay, 86400. _d 0 - timeOfDay )
+     &             .LE. rbcsTempHalfWindow ) ) THEN
          DO j=0,sNy+1
           DO i=0,sNx+1
            gTendency(i,j) = gTendency(i,j)

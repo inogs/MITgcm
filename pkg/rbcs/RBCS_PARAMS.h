@@ -19,6 +19,11 @@ C     deltaTrbcs :: time step used to compute iteration numbers for singleTimeFi
 C     rbcsIter0  :: singleTimeFile iteration number corresponding to rbcsForcingOffset
 C     rbcsVanishingTime :: when rbcsVanishingTime .NE. 0. the relaxation strength reduces
 C                       :: linearly to vanish at myTime .EQ. rbcsVanishingTime
+C     rbcsTempHalfWindow :: half-width (s) of the daily assimilation window centred on
+C                        :: midnight; temperature relaxation is applied only when
+C                        :: MIN(timeOfDay, 86400-timeOfDay) <= rbcsTempHalfWindow.
+C                        :: Set <= 0 (default) to disable and always assimilate.
+C                        :: For a window from 22h to 02h set it to 7200.
 C
       _RL tauRelaxU
       _RL tauRelaxV
@@ -29,6 +34,7 @@ C
       _RL rbcsForcingOffset
       _RL deltaTrbcs
       _RL rbcsVanishingTime
+      _RL rbcsTempHalfWindow
       INTEGER rbcsIter0
       LOGICAL rbcsSingleTimeFiles
       LOGICAL useRBCuVel
@@ -52,7 +58,8 @@ C
      &          rbcsForcingCycle,
      &          rbcsForcingOffset,
      &          rbcsVanishingTime,
-     &          deltaTrbcs
+     &          deltaTrbcs,
+     &          rbcsTempHalfWindow
       COMMON /RBCS_PARM01_I/
      &          rbcsIter0
       COMMON /RBCS_PARM01_L/
