@@ -29,6 +29,7 @@ C     === Global variables ===
 #include "RBCS_SIZE.h"
 #include "RBCS_PARAMS.h"
 #include "RBCS_FIELDS.h"
+#include "GLOBAL_MAX.h"
 
 C     !INPUT/OUTPUT PARAMETERS:
 C     === Routine arguments ===
@@ -50,6 +51,7 @@ C     Above use static heap storage to allow exchange.
 C     aWght, bWght :: Interpolation weights
 
       INTEGER bi, bj, i, j, k
+      _RL localMinK
       INTEGER intimeP, intime0, intime1
       _RL aWght, bWght, locTime
       INTEGER Ifprd
@@ -275,6 +277,21 @@ C--   Interpolate
        ENDDO
       ENDIF
 #endif /* ALLOW_PTRACERS */
+
+      IF ( useRBCtemp ) THEN
+       DO k=1,Nr
+        localMinK = 1. _d 10
+        DO bj = myByLo(myThid), myByHi(myThid)
+         DO bi = myBxLo(myThid), myBxHi(myThid)
+          localMinK = MIN( localMinK,
+     &        MINVAL( RBCtemp(0:sNx+1,0:sNy+1,k,bi,bj) ) )
+         ENDDO
+        ENDDO
+        localMinK = -localMinK
+        CALL GLOBAL_MAX_R8( localMinK, myThid )
+        rbcsTempGlobMin(k) = -localMinK
+       ENDDO
+      ENDIF
 
       CALL TIMER_STOP ('RBCS_FIELDS_LOAD      [I/O]', myThid)
 
