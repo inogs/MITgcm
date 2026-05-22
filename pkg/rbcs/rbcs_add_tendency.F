@@ -50,7 +50,7 @@ C  i,j            :: loop indices
       _RL rec_tauRlx
       _RL timeOfDay
 
-      CHARACTER*(MAX_LEN_MBUF) msgBuf
+C      CHARACTER*(MAX_LEN_MBUF) msgBuf
 #ifdef ALLOW_PTRACERS
       INTEGER iTracer
 #endif
@@ -97,25 +97,25 @@ C     a time window centered at time 00h for each day.
         irbc = MIN(maskLEN,tracerNum)
         rec_tauRlx = rbcsVanishingFac/tauRelaxT
         timeOfDay = MOD( myTime, 86400. _d 0 )
-        _BEGIN_MASTER( myThid )
-        WRITE(msgBuf,'(A,E16.9,E16.9)') 'timeOfDay, myTime: ',
-     &        timeOfDay, myTime
-        CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                      SQUEEZE_RIGHT, myThid )
-        WRITE(msgBuf,'(A,I,E16.9)') 'k, rbcsTempGlobMin(k): ',
-     &        k , rbcsTempGlobMin(k)
-        CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                      SQUEEZE_RIGHT, myThid )
-        _END_MASTER( myThid )
+C        _BEGIN_MASTER( myThid )
+C        WRITE(msgBuf,'(A,E16.9,E16.9)') 'timeOfDay, myTime: ',
+C     &        timeOfDay, myTime
+C        CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+C     &                      SQUEEZE_RIGHT, myThid )
+C        WRITE(msgBuf,'(A,I,E16.9)') 'k, rbcsTempGlobMin(k): ',
+C     &        k , rbcsTempGlobMin(k)
+C        CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+C     &                      SQUEEZE_RIGHT, myThid )
+C        _END_MASTER( myThid )
         IF ( rbcsTempGlobMin(k) .GE. -5. _d 0 .AND.
      &       ( rbcsTempHalfWindow .LE. 0. _d 0 .OR.
      &         MIN( timeOfDay, 86400. _d 0 - timeOfDay )
      &             .LE. rbcsTempHalfWindow ) ) THEN
-         _BEGIN_MASTER( myThid )  
-         WRITE(msgBuf,'(2A,E16.9)') 'Assimilating temperature'
-         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                       SQUEEZE_RIGHT, myThid )
-         _END_MASTER( myThid )  
+C         _BEGIN_MASTER( myThid )  
+C         WRITE(msgBuf,'(2A,E16.9)') 'Assimilating temperature'
+C         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+C     &                       SQUEEZE_RIGHT, myThid )
+C         _END_MASTER( myThid )  
          DO j=0,sNy+1
           DO i=0,sNx+1
            gTendency(i,j) = gTendency(i,j)
